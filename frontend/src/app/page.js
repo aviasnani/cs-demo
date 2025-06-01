@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
+import Login from './components/Login' ; 
 
 export default function ChatApp() {
   const [conversations, setConversations] = useState([
@@ -110,6 +111,7 @@ export default function ChatApp() {
             
           </div>
         </div>
+        <Login />
 
         {/* Search */}
         <div style={{ padding: '10px' }}>
