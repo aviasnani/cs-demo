@@ -1,15 +1,17 @@
-// src/Login.js
+// src/Login.jsx
 import React, { useState } from 'react';
 import { signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '../../firebase.config';
+import { auth, googleProvider, appleProvider } from '../../firebase.config';
 
 function Login() {
   const [user, setUser] = useState(null);
 
-  const handleLogin = async () => {
+  const handleLogin = async (provider) => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
+      console.log("Logged in user:", result.user);
+      // You can optionally send `result.user` to your backend here
     } catch (error) {
       console.error("Login error:", error);
       alert("Failed to login. Please try again.");
@@ -25,17 +27,16 @@ function Login() {
       <div style={styles.card}>
         {!user ? (
           <>
-            <h2>Login with Google</h2>
-            <button onClick={handleLogin} style={styles.button}>
+            <h2>Login</h2>
+            <button onClick={() => handleLogin(googleProvider)} style={styles.button}>
               Sign In with Google
             </button>
           </>
         ) : (
           <>
-            <h2>Welcome, {user.displayName}</h2>
-            <img src={user.photoURL} alt="Profile" style={styles.image} />
-            <p>Email: {user.email}</p> 
-            {console.log(user)}
+            <h2>Welcome, {user.displayName || "User"}</h2>
+            {user.photoURL && <img src={user.photoURL} alt="Profile" style={styles.image} />}
+            <p>Email: {user.email}</p>
             <button onClick={handleLogout} style={styles.button}>
               Logout
             </button>
